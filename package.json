@@ -1,0 +1,23 @@
+{
+  "name": "threejs-first-project",
+  "private": false,
+  "description": "This is the first ThreeJS project from Bruno Simon's Journey",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "keywords": [
+    "ThreeJS",
+    "Canvas"
+  ],
+  "author": "Alessandro Pecorilla",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^4.5.0"
+  },
+  "dependencies": {
+    "three": "^0.158.0"
+  }
+}
