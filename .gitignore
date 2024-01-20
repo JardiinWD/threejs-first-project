@@ -5,3 +5,5 @@ package-json.lock
 yarn.lock
 # Environment variables
 config.env
+# Gitkeep
+/static/.gitkeep
