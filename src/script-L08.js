@@ -15,9 +15,34 @@ const scene = new THREE.Scene()
 // ===== GEOMETRY ==== //
 
 // Creating a box geometry with dimensions 1x1x1, subdivided into 5x5x5 segments
-const geometry = new THREE.BoxGeometry(1, 1, 1, 5, 5, 5)
+// const geometry = new THREE.BoxGeometry(1, 1, 1, 4, 4, 4)
+
+// Creating an empty buffer geometry to hold dynamic data
+const geometry = new THREE.BufferGeometry()
+// Specifying the count of vertices in the geometry
+const count = 50
+// Creating a Float32Array to store the positions of vertices (3 coordinates per vertex)
+const positionsArray = new Float32Array(count * 3 * 3)
+// Populating the positionsArray with random values within a specific range
+for (let i = 0; i < count * 3 * 3; i++) {
+    // Generating random values between -2 and 2
+    positionsArray[i] = (Math.random() - 0.5) * 4
+}
+
+/** Creating a buffer attribute to hold the vertex positions
+ * 
+ * @param {Float32Array} positionsArray - Array containing vertex positions
+ * @param {number} 3 - Number of coordinates per vertex (x, y, z)
+ */
+const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3)
+// Assigning the positions attribute to the 'position' attribute of the geometry
+geometry.setAttribute('position', positionsAttribute)
+
 // Creating a basic red material for the mesh
-const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+const material = new THREE.MeshBasicMaterial({
+    color: 0xff0000,
+    wireframe: false
+})
 // Creating a mesh by combining the geometry and material
 const mesh = new THREE.Mesh(geometry, material)
 // Adding the mesh to the scene
@@ -47,18 +72,6 @@ window.addEventListener('resize', () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
-// Handle double-click event for fullscreen toggle
-window.addEventListener('dblclick', () => {
-    // Checking if the document is not currently in fullscreen mode
-    if (!document.fullscreenElement) {
-        // Requesting fullscreen mode for the canvas
-        canvas.requestFullscreen()
-    } else {
-        // Exiting fullscreen mode if already in fullscreen
-        document.exitFullscreen()
-    }
-})
-
 // ===== BASE CAMERA ==== //
 
 /** Creating a perspective camera with a 45-degree field of view, 
@@ -85,6 +98,7 @@ const controls = new OrbitControls(camera, canvas)
 // Enabling damping for smooth camera movements
 controls.enableDamping = true
 
+
 // ===== RENDERER ==== //
 
 // Creating a WebGL renderer, specifying the target canvas
@@ -102,19 +116,17 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 const clock = new THREE.Clock()
 
 // Function that runs every frame
-
 const tick = () => {
     // Getting the elapsed time since the clock started
     const elapsedTime = clock.getElapsedTime()
     // Update controls in order to have controls with damping enabled
     // it needs to be updated on every render
     controls.update()
-
     // Rendering the scene with the camera perspective
     renderer.render(scene, camera)
-
     // Requesting the next animation frame to continue the animation loop
     window.requestAnimationFrame(tick)
 }
 
+// Invoke the tick function that 
 tick()
